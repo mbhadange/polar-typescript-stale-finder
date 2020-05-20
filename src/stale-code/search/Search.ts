@@ -99,16 +99,21 @@ export interface IFile {
 
 let hitMap = new Map();
 let opts = new DefaultOpts();
+var file_array: IFile[] = [];
 let rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
-  });
+});
   
-  rl.question('Enter the directory to be parsed through: ', (currDirectory) => {
-      currDirectory.toLowerCase();
-      let file_array = Search.find(currDirectory, opts);
-      
+rl.question('Enter the directory to be parsed through: ', (currDirectory) => {
+    currDirectory.toLowerCase();
+    for (var file in Search.find(currDirectory, opts)) {
+        if (file.split('.').pop() === 'ts' || file.split('.').pop() === 'tsx') {
+            hitMap.set(file,0);
+        }
+    }
     rl.close();
-  });
+});
+
 
   
