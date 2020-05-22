@@ -73,9 +73,9 @@ export class Search {
     }
 }
 
-// the file type that is compatibale
+/// the file type that is compatibale
 export type FileType = 'file' | 'directory';
-// A file extension without the '.' prefix.  Example: jpg, jpeg, txt
+/// A file extension without the '.' prefix.  Example: jpg, jpeg, txt
 export type FileExt = string;
 
 class DefaultOpts implements Opts {
@@ -85,35 +85,70 @@ class DefaultOpts implements Opts {
 
 export interface Opts {
     readonly recurse?: boolean;
-    // Only accept the given file types.  By default all types are accepted.
+    /// Only accept the given file types.  By default all types are accepted.
     readonly types?: ReadonlyArray<FileType>; 
-    // Only accept the given extensions. By default all extension are accepted.
+    /// Only accept the given extensions. By default all extension are accepted.
     readonly extensions?: ReadonlyArray<FileExt>; 
 }
 
 export interface IFile {
     readonly name: string; 
-    readonly path: PathStr; // the entire path of the file
-    readonly type: FileType; // what type the file is
+    readonly path: PathStr; /// the entire path of the file
+    readonly type: FileType; /// what type the file is
 }
 
+/// creates an empty map
 let hitMap = new Map();
 let opts = new DefaultOpts();
-var file_array: IFile[] = [];
+/// allows us to take user input
 let rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
-  
+
+// asks user to see which directory to parse through
 rl.question('Enter the directory to be parsed through: ', (currDirectory) => {
+    /// converts entire directory name to lowercase
     currDirectory.toLowerCase();
+    /// Search.find returns an array with all the files in the directory
+    /// iterates through each file in the directory
     for (var file in Search.find(currDirectory, opts)) {
+        /// checks to make sure that the file type is either .ts or .tsx
         if (file.split('.').pop() === 'ts' || file.split('.').pop() === 'tsx') {
-            hitMap.set(file,0);
+            /// gets all the contents of the current file
+            const data = fs.readFileSync(file,'utf8');
+            /// splits each line of data to allow us to parse through each one
+            const lines = data.split(/\r?\n/);
+            /// creates a regular expression for the import lines
+            let re = `import(?:["'\s]*([\w*{}\n\r\t, ]+)from\s*)?["'\s].*([@\w_-]+)["'\s].*;$`;
+            /// iterates through each line of the file
+            lines.forEach((line) => {
+                /// checks to see if the line matches the format of the regular expression
+                let importLine = line.match(re);
+                /// makes sure that the line actually has the proper format of the regEx
+                if (importLine != null) {
+                    /// gets the entire import lines contents
+                    let importVal = importLine[1];
+                    /// splits the line based off spaces and gets only the file path
+                    let filePath = importVal.split(' ').pop();
+                    /// converts that file path into a full file path
+                    var fullPath = currDirectory + filePath;
+                    /// checks to see if the hitmap already has that path
+                    if (hitMap.has(fullPath) === true) {
+                        /// if it does then increments the value of that file by 1
+                        var currVal = hitMap.get(fullPath);
+                        hitMap.set(fullPath, currVal + 1);
+                    }
+                    /// if the hitmap does not have that path as a key already
+                    else {
+                        /// then sets that file path to have a value of 1
+                        hitMap.set(fullPath, 1);
+                    }
+                }
+            });
         }
     }
     rl.close();
 });
-
-
-  
+/// prints out the hitmap
+console.log(hitMap);
