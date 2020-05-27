@@ -1,11 +1,3 @@
-import {
-    ISODateString,
-    ISODateTimeString,
-    ISODateYearMonthString,
-    ISODateYearString,
-} from "polar-shared/src/metadata/ISODateTimeStrings";
-import {DOIStr} from "polar-shared/src/util/Strings";
-
 import ErrnoException = NodeJS.ErrnoException;
 import * as libpath from "path";
 import * as fs from "fs";
@@ -20,6 +12,9 @@ export class Search {
         const result: IFile[] = [];
 
         for (const name of files) {
+            
+            const path = libpath.join(dir, name);
+            const stat = fs.statSync(path);
 
             const createType = (): FileType | undefined => {
                 if (stat.isDirectory()) {
@@ -40,8 +35,6 @@ export class Search {
             };
 
             const file = createRecord();
-            const path = libpath.join(dir, name);
-            const stat = fs.statSync(path);
 
             /**
              * Return true if we should accept the file.
@@ -106,21 +99,31 @@ let rl = readline.createInterface({
     output: process.stdout
 });
 
-// asks user to see which directory to parse through
-rl.question('Enter the directory to be parsed through: ', (currDirectory) => {
-    /// converts entire directory name to lowercase
-    currDirectory.toLowerCase();
+/// asks user to see which directory to parse through
+/// example: /Users/mihirmacpro13/Documents/GitHub/stale-finder-test-directory/
+rl.question('Enter the entire directory path to be parsed through: ', (currDirectory) => {
     /// Search.find returns an array with all the files in the directory
     /// iterates through each file in the directory
-    for (var file in Search.find(currDirectory, opts)) {
+    var fileMap = Search.find(currDirectory, opts);
+    for (var i = 0; i < fileMap.length; i++) {
+        /// map of the file type, name, path 
+        var file = fileMap[i];
+        var initialFileName = file.name;
+        var initialFilePath = file.path;
+
+        /// checks to see if the file name is test.ts
+        /// if it is then continues to the next file
+        if (file.name === 'test.ts') {
+            continue;
+        }
         /// checks to make sure that the file type is either .ts or .tsx
-        if (file.split('.').pop() === 'ts' || file.split('.').pop() === 'tsx') {
+        else if (initialFileName.split('.').pop() === 'ts' || initialFileName.split('.').pop() === 'tsx') {
             /// gets all the contents of the current file
-            const data = fs.readFileSync(file,'utf8');
+            const data = fs.readFileSync(initialFilePath,'utf8');
             /// splits each line of data to allow us to parse through each one
             const lines = data.split(/\r?\n/);
             /// creates a regular expression for the import lines
-            let re = `import(?:["'\s]*([\w*{}\n\r\t, ]+)from\s*)?["'\s].*([@\w_-]+)["'\s].*;$`;
+            let re = /import(?:["'\s]*([\w*{}\n\r\t, ]+)from\s*)?["'\s].*([@\w_-]+)["'\s].*;$/;
             /// iterates through each line of the file
             lines.forEach((line) => {
                 /// checks to see if the line matches the format of the regular expression
@@ -128,11 +131,11 @@ rl.question('Enter the directory to be parsed through: ', (currDirectory) => {
                 /// makes sure that the line actually has the proper format of the regEx
                 if (importLine != null) {
                     /// gets the entire import lines contents
-                    let importVal = importLine[1];
+                    let importVal = importLine[0];
                     /// splits the line based off spaces and gets only the file path
                     let filePath = importVal.split(' ').pop();
                     /// converts that file path into a full file path
-                    var fullPath = currDirectory + filePath;
+                    var fullPath = __dirname + filePath;
                     /// checks to see if the hitmap already has that path
                     if (hitMap.has(fullPath) === true) {
                         /// if it does then increments the value of that file by 1
@@ -148,7 +151,8 @@ rl.question('Enter the directory to be parsed through: ', (currDirectory) => {
             });
         }
     }
+    /// prints out the hitmap
+    console.log(hitMap);
     rl.close();
 });
-/// prints out the hitmap
-console.log(hitMap);
+
