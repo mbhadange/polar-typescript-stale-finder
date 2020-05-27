@@ -153,8 +153,16 @@ rl.question('Enter the entire directory path to be parsed through: ', (currDirec
             });
         }
     }
-    /// prints out the hitmap
-    console.log(hitMap);
+
+    /**
+     * Sorts the map in order based on the values 
+     */
+    hitMap[Symbol.iterator] = function* () {
+        yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
+    }
+    
+    /// prints out the hitMap
+    console.log([...hitMap]); 
     rl.close();
 });
 
