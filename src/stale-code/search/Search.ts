@@ -99,8 +99,10 @@ let rl = readline.createInterface({
     output: process.stdout
 });
 
-/// asks user to see which directory to parse through
-/// example: /Users/mihirmacpro13/Documents/GitHub/stale-finder-test-directory/
+/**
+ * asks user to see which directory to parse through
+ * example: /Users/mihirmacpro13/Documents/GitHub/stale-finder-test-directory/
+ */ 
 rl.question('Enter the entire directory path to be parsed through: ', (currDirectory) => {
     /// Search.find returns an array with all the files in the directory
     /// iterates through each file in the directory
