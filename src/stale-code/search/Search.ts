@@ -145,10 +145,10 @@ for (var i = 0; i < fileMap.length; i++) {
                          * creates the full path with the proper directory name 
                          * checks to make sure that the path exists
                          */
-                        var fullDirectory = path.basename(initialFilePath);
+                        var fullDirectory = path.dirname(initialFileName);
                         fullPath = path.resolve(fullDirectory, filePath);
                         if (fs.existsSync(fullPath) == false) {
-                            console.warn();
+                            console.warn("File does not exist!");
                         }
                     }
                 }
