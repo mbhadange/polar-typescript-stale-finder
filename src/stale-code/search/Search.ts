@@ -144,7 +144,7 @@ for (var i = 0; i < fileMap.length; i++) {
                         var fullDirectory = path.basename(initialFilePath);
                         fullPath = path.resolve(fullDirectory, filePath);
                         if (fs.existsSync(fullPath) == false) {
-                            console.log("File does not exist!");
+                            console.warn();
                         }
                     }
                 }
