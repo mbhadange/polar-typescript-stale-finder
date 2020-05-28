@@ -96,7 +96,7 @@ let opts = new DefaultOpts();
 
 /**
  * uses process.argv to see which directory to parse through using the command line
- * example: node Search.js /Users/mihirmacpro13/Documents/GitHub/stale-finder-test-directory/
+ * example: node Search.js /Users/mihirmacpro13/Documents/GitHub/polar-bookshelf/web/js
  */ 
 var myArgs = process.argv[2];
 /// Search.find returns an array with all the files in the directory
@@ -139,16 +139,16 @@ for (var i = 0; i < fileMap.length; i++) {
                         filePath = filePath.replace(/['"]+/g, '');
                         if (filePath.includes('.ts') == false) {
                             filePath = filePath.replace(filePath.substring(filePath.length-1), "");
-                            filePath = filePath + '.ts;';
+                            filePath = filePath + '.ts';
                         }
                         /**
                          * creates the full path with the proper directory name 
                          * checks to make sure that the path exists
                          */
-                        var fullDirectory = path.dirname(initialFileName);
-                        fullPath = path.resolve(fullDirectory, filePath);
+                        var fullDirectory = path.dirname(initialFilePath);
+                        fullPath = path.resolve(fullDirectory, initialFileName);
                         if (fs.existsSync(fullPath) == false) {
-                            console.warn("File does not exist!");
+                            console.warn("File does not exist: " + fullPath);
                         }
                     }
                 }
