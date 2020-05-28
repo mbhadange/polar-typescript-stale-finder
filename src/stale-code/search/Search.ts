@@ -103,6 +103,7 @@ var myArgs = process.argv[2];
 /// iterates through each file in the directory
 var fileMap = Search.find(myArgs, opts);
 for (var i = 0; i < fileMap.length; i++) {
+
     /// map of the file type, name, path 
     var file = fileMap[i];
     var initialFileName = file.name;
@@ -110,11 +111,13 @@ for (var i = 0; i < fileMap.length; i++) {
     
     /// checks to see if the file name is test.ts
     /// if it is then continues to the next file
-    if (file.name === 'test.ts'  || file.name.includes('.d.ts')) {
+    if (file.name.includes('test.ts')  || file.name.includes('.d.ts')) {
         continue;
     }
     /// checks to make sure that the file type is either .ts or .tsx
     else if (initialFileName.split('.').pop() === 'ts' || initialFileName.split('.').pop() === 'tsx') {
+        /// initializes hitMap
+        hitMap.set(initialFilePath, 0);
         /// gets all the contents of the current file
         const data = fs.readFileSync(initialFilePath,'utf8');
         /// splits each line of data to allow us to parse through each one
@@ -189,5 +192,12 @@ for (var index = 0; index < updatedHitMap.length; index++) {
     var value = currentArray[1];
     finalHitMap[index] = [value, key];
 }
-/// prints out the hitMap
-console.log(finalHitMap); 
+
+/**
+ * prints out the finalHitMap
+ */
+for (var j = 0; j < finalHitMap.length; j++) {
+    var curr = finalHitMap[j];
+    console.log(curr[0], ' ', curr[1], '\n');
+}
+
