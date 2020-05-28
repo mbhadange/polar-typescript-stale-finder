@@ -4,6 +4,7 @@ import * as fs from "fs";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {PathStr} from "polar-shared/src/util/Strings";
 import * as readline from 'readline';
+import * as path from 'path';
 
 export class Search {
     public static find(dir: string, opts: Opts = new DefaultOpts()): ReadonlyArray<IFile> {
@@ -136,8 +137,11 @@ rl.question('Enter the entire directory path to be parsed through: ', (currDirec
                     let importVal = importLine[0];
                     /// splits the line based off spaces and gets only the file path
                     let filePath = importVal.split(' ').pop();
+                    var fullPath;
                     /// converts that file path into a full file path
-                    var fullPath = __dirname + filePath;
+                    if (filePath != undefined) {
+                        fullPath = path.resolve(initialFilePath, filePath);
+                    }
                     /// checks to see if the hitmap already has that path
                     if (hitMap.has(fullPath) === true) {
                         /// if it does then increments the value of that file by 1
