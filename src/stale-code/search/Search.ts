@@ -141,6 +141,10 @@ for (var i = 0; i < fileMap.length; i++) {
                             filePath = filePath.replace(filePath.substring(filePath.length-1), "");
                             filePath = filePath + '.ts;';
                         }
+                        /**
+                         * creates the full path with the proper directory name 
+                         * checks to make sure that the path exists
+                         */
                         var fullDirectory = path.basename(initialFilePath);
                         fullPath = path.resolve(fullDirectory, filePath);
                         if (fs.existsSync(fullPath) == false) {
