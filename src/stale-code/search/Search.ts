@@ -3,7 +3,6 @@ import * as libpath from "path";
 import * as fs from "fs";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {PathStr} from "polar-shared/src/util/Strings";
-import * as readline from 'readline';
 import * as path from 'path';
 
 export class Search {
@@ -108,10 +107,10 @@ for (var i = 0; i < fileMap.length; i++) {
     var file = fileMap[i];
     var initialFileName = file.name;
     var initialFilePath = file.path;
-
+    
     /// checks to see if the file name is test.ts
     /// if it is then continues to the next file
-    if (file.name === 'test.ts') {
+    if (file.name === 'test.ts'  || file.name.includes('.d.ts')) {
         continue;
     }
     /// checks to make sure that the file type is either .ts or .tsx
@@ -135,8 +134,21 @@ for (var i = 0; i < fileMap.length; i++) {
                 var fullPath;
                 /// converts that file path into a full file path
                 if (filePath != undefined) {
-                    fullPath = path.resolve(initialFilePath, filePath);
+                    if (filePath.includes('./') || filePath.includes('../')) {
+                        /// fixes the punctuation of the file path of the import
+                        filePath = filePath.replace(/['"]+/g, '');
+                        if (filePath.includes('.ts') == false) {
+                            filePath = filePath.replace(filePath.substring(filePath.length-1), "");
+                            filePath = filePath + '.ts;';
+                        }
+                        var fullDirectory = path.basename(initialFilePath);
+                        fullPath = path.resolve(fullDirectory, filePath);
+                        if (fs.existsSync(fullPath) == false) {
+                            console.log("File does not exist!");
+                        }
+                    }
                 }
+
                 /// checks to see if the hitmap already has that path
                 if (hitMap.has(fullPath) === true) {
                     /// if it does then increments the value of that file by 1
