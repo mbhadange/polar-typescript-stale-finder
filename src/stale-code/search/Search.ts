@@ -165,8 +165,21 @@ rl.question('Enter the entire directory path to be parsed through: ', (currDirec
         yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
     }
     
+    /// makes the map into a table type format with a nested array
+    var updatedHitMap = [...hitMap];
+
+    /**
+     * swaps the key and the value of the map, so the key is the number of hits and the value is the full file path
+     */
+    var finalHitMap = [];
+    for (var index = 0; index < updatedHitMap.length; index++) {
+        var currentArray = updatedHitMap[index];
+        var key = currentArray[0];
+        var value = currentArray[1];
+        finalHitMap[index] = [value, key];
+    }
     /// prints out the hitMap
-    console.log([...hitMap]); 
+    console.log(finalHitMap); 
     rl.close();
 });
 
