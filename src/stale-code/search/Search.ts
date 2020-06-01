@@ -221,5 +221,7 @@ for (var index = 0; index < updatedHitMap.length; index++) {
  */
 for (var j = 0; j < finalHitMap.length; j++) {
     var curr = finalHitMap[j];
-    console.log(curr[0], ' ', curr[1], '\n');
+    if (curr[1].includes('Test') == false && curr[1].includes('test') == false) {
+        console.log(curr[0], ' ', curr[1]);
+    }
 }
