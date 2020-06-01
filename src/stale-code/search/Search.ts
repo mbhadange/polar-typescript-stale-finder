@@ -105,14 +105,16 @@ for (var k = 2; k < 4; k++) {
     /// iterates through each file in the directory
     var fileMap = Search.find(myArgs, opts);
     for (var k = 0; k < fileMap.length; k++) {
-        if (fileMap[k].name.includes('test.ts')  || fileMap[k].name.includes('.d.ts')) {
-            continue;
-        }
-        /// checks to make sure that the file type is either .ts or .tsx
-        else if (fileMap[k].name.split('.').pop() === 'ts' || fileMap[k].name.split('.').pop() === 'tsx') {
-            /// initializes hitMap
-            hitMap.set(fileMap[k].path, 0);
-        }
+        if (hitMap.has(fileMap[k].path) == false) {
+            if (fileMap[k].name.includes('test.ts')  || fileMap[k].name.includes('.d.ts')) {
+                continue;
+            }
+            /// checks to make sure that the file type is either .ts or .tsx
+            else if (fileMap[k].name.split('.').pop() === 'ts' || fileMap[k].name.split('.').pop() === 'tsx') {
+                /// initializes hitMap
+                hitMap.set(fileMap[k].path, 0);
+            }
+        } 
     }
 
     for (var i = 0; i < fileMap.length; i++) {
