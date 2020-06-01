@@ -102,6 +102,17 @@ var myArgs = process.argv[2];
 /// Search.find returns an array with all the files in the directory
 /// iterates through each file in the directory
 var fileMap = Search.find(myArgs, opts);
+for (var k = 0; k < fileMap.length; k++) {
+    if (fileMap[k].name.includes('test.ts')  || fileMap[k].name.includes('.d.ts')) {
+        continue;
+    }
+    /// checks to make sure that the file type is either .ts or .tsx
+    else if (fileMap[k].name.split('.').pop() === 'ts' || fileMap[k].name.split('.').pop() === 'tsx') {
+        /// initializes hitMap
+        hitMap.set(fileMap[k].path, 0);
+    }
+}
+
 for (var i = 0; i < fileMap.length; i++) {
 
     /// map of the file type, name, path 
@@ -116,8 +127,6 @@ for (var i = 0; i < fileMap.length; i++) {
     }
     /// checks to make sure that the file type is either .ts or .tsx
     else if (initialFileName.split('.').pop() === 'ts' || initialFileName.split('.').pop() === 'tsx') {
-        /// initializes hitMap
-        hitMap.set(initialFilePath, 0);
         /// gets all the contents of the current file
         const data = fs.readFileSync(initialFilePath,'utf8');
         /// splits each line of data to allow us to parse through each one
@@ -149,23 +158,37 @@ for (var i = 0; i < fileMap.length; i++) {
                          * checks to make sure that the path exists
                          */
                         var fullDirectory = path.dirname(initialFilePath);
-                        fullPath = path.resolve(fullDirectory, initialFileName);
+                        fullPath = path.resolve(fullDirectory, filePath);
                         if (fs.existsSync(fullPath) == false) {
-                            console.warn("File does not exist: " + fullPath);
+                            fullPath = fullPath + 'x';
+                            if (fs.existsSync(fullPath) == false) {
+                                fullPath = fullPath.replace(fullPath.substring(fullPath.length-3), "");
+                                fullPath = fullPath + 'd.ts';
+                                if (fullPath.includes('utils.js.d.ts')) {
+                                    fullPath = fullPath.replace(fullPath.substring(fullPath.length-7), "");
+                                    fullPath = fullPath + 'ts';
+                                }
+                                if (fs.existsSync(fullPath) == false) {
+                                    console.warn("File does not exist: " + fullPath);
+                                }
+                            }
                         }
+                        
                     }
                 }
-
-                /// checks to see if the hitmap already has that path
-                if (hitMap.has(fullPath) === true) {
-                    /// if it does then increments the value of that file by 1
-                    var currVal = hitMap.get(fullPath);
-                    hitMap.set(fullPath, currVal + 1);
-                }
-                /// if the hitmap does not have that path as a key already
-                else {
-                    /// then sets that file path to have a value of 1
-                    hitMap.set(fullPath, 1);
+                
+                if (fullPath != undefined) {
+                     /// checks to see if the hitmap already has that path
+                    if (hitMap.has(fullPath) === true) {
+                        /// if it does then increments the value of that file by 1
+                        var currVal = hitMap.get(fullPath);
+                        hitMap.set(fullPath, currVal + 1);
+                    }
+                    /// if the hitmap does not have that path as a key already
+                    else {
+                        /// then sets that file path to have a value of 1
+                        hitMap.set(fullPath, 1);
+                    }
                 }
             }
         });
@@ -183,7 +206,7 @@ hitMap[Symbol.iterator] = function* () {
 var updatedHitMap = [...hitMap];
 
 /**
- * swaps the key and the value of the map, so the key is the number of hits and the value is the full file path
+ * swaps the key and the value of the map, so the number of hits is formatted to the left of the full file path
  */
 var finalHitMap = [];
 for (var index = 0; index < updatedHitMap.length; index++) {
@@ -200,4 +223,3 @@ for (var j = 0; j < finalHitMap.length; j++) {
     var curr = finalHitMap[j];
     console.log(curr[0], ' ', curr[1], '\n');
 }
-
