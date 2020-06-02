@@ -94,12 +94,13 @@ export interface IFile {
 let hitMap = new Map();
 
 /**
- * uses process.argv to see which 2 directories to parse through using the command line
+ * uses process.argv to see take in any number of directories in the command line
  * example: node Search.js /Users/mihirmacpro13/Documents/GitHub/polar-bookshelf/web/js /Users/mihirmacpro13/Documents/GitHub/polar-bookshelf/apps
  */ 
-for (var x = 2; x < 4; x++) {
+var argument = process.argv;
+for (var x = 2; x < argument.length; x++) {
     let opts = new DefaultOpts();
-    var myArgs = process.argv[x];
+    var myArgs = argument[x];
 
     /// Search.find returns an array with all the files in the directory
     /// iterates through each file in the directory
