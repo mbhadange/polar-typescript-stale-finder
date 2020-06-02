@@ -92,14 +92,14 @@ export interface IFile {
 
 /// creates an empty map
 let hitMap = new Map();
-let opts = new DefaultOpts();
 
 /**
- * uses process.argv to see which directory to parse through using the command line
- * example: node Search.js /Users/mihirmacpro13/Documents/GitHub/polar-bookshelf/web/js
+ * uses process.argv to see which 2 directories to parse through using the command line
+ * example: node Search.js /Users/mihirmacpro13/Documents/GitHub/polar-bookshelf/web/js /Users/mihirmacpro13/Documents/GitHub/polar-bookshelf/apps
  */ 
-for (var k = 2; k < 4; k++) {
-    var myArgs = process.argv[k];
+for (var x = 2; x < 4; x++) {
+    let opts = new DefaultOpts();
+    var myArgs = process.argv[x];
 
     /// Search.find returns an array with all the files in the directory
     /// iterates through each file in the directory
