@@ -5,7 +5,7 @@ import {Search} from "./find";
 import {DefaultOpts} from "./find";
 
 /// creates an empty map
-let hitMap = new Map();
+var hitMap = new Map();
 
 /**
  * uses process.argv to see take in any number of directories in the command line
@@ -13,7 +13,7 @@ let hitMap = new Map();
  */ 
 var argument = process.argv;
 for (var x = 2; x < argument.length; x++) {
-    let opts = new DefaultOpts();
+    const opts = new DefaultOpts();
     var myArgs = argument[x];
 
     /// Search.find returns an array with all the files in the directory
@@ -51,17 +51,17 @@ for (var x = 2; x < argument.length; x++) {
             /// splits each line of data to allow us to parse through each one
             const lines = data.split(/\r?\n/);
             /// creates a regular expression for the import lines
-            let re = /import(?:["'\s]*([\w*{}\n\r\t, ]+)from\s*)?["'\s].*([@\w_-]+)["'\s].*;$/;
+            const re = /import(?:["'\s]*([\w*{}\n\r\t, ]+)from\s*)?["'\s].*([@\w_-]+)["'\s].*;$/;
             /// iterates through each line of the file
             lines.forEach((line) => {
                 /// checks to see if the line matches the format of the regular expression
-                let importLine = line.match(re);
+                var importLine = line.match(re);
                 /// makes sure that the line actually has the proper format of the regEx
                 if (importLine != null) {
                     /// gets the entire import lines contents
-                    let importVal = importLine[0];
+                    var importVal = importLine[0];
                     /// splits the line based off spaces and gets only the file path
-                    let filePath = importVal.split(' ').pop();
+                    var filePath = importVal.split(' ').pop();
                     var fullPath;
                     /// converts that file path into a full file path
                     if (filePath != undefined) {
