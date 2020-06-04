@@ -5,7 +5,7 @@ import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {PathStr} from "polar-shared/src/util/Strings";
 
 export class Search {
-    public static find(dir: string, opts: Opts = new DefaultOpts()): ReadonlyArray<IFile> {
+    public static findFilesRecursively(dir: string, opts: Opts = new DefaultOpts()): ReadonlyArray<IFile> {
         const files = fs.readdirSync(dir);
 
         const result: IFile[] = [];
@@ -58,7 +58,7 @@ export class Search {
                 result.push(file);
             }
             if (opts.recurse && type === 'directory') {
-                result.push(...this.find(path, opts));
+                result.push(...this.findFilesRecursively(path, opts));
             }
         }
         return result;
