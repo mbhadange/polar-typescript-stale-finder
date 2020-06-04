@@ -195,4 +195,5 @@ function main() {
     printMap(finalMap);
 }
 
+/// runs the main function and prints out the table with the number of hits as the key and the path as the value
 main(); 
