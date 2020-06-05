@@ -122,6 +122,20 @@ function printMap(finalMap : any[][]) {
     }
 }
 
+/**
+ * gets the extension of the filename
+ * @param filename 
+ */
+function getExtension (filename : string) : string {
+    var extension = filename.split('.').pop();
+    if (extension != undefined) {
+        return extension;
+    }
+    else {
+        return 'undefined';
+    }
+}
+
 function main() {
     /// uses process.argv to see take in any number of directories in the command line
     /// example: node Search.js /Users/mihirmacpro13/Documents/GitHub/polar-bookshelf/web/js /Users/mihirmacpro13/Documents/GitHub/polar-bookshelf/apps
@@ -141,14 +155,15 @@ function main() {
             var file = fileMap[i];
             var initialFileName = file.name;
             var initialFilePath = file.path;
-            
+            var ext = getExtension(initialFileName);
+
             /// checks to see if the file name is test.ts
             /// if it is then continues to the next file
             if (file.name.includes('test.ts')  || file.name.includes('.d.ts')) {
                 continue;
             }
             /// checks to make sure that the file type is either .ts or .tsx
-            else if (initialFileName.split('.').pop() === 'ts' || initialFileName.split('.').pop() === 'tsx') {
+            else if (['ts','tsx'].includes(ext)) {
                 /// gets all the contents of the current file
                 const data = fs.readFileSync(initialFilePath,'utf8');
                 /// splits each line of data to allow us to parse through each one
