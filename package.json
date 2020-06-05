@@ -4,23 +4,25 @@
   "description": "Finds stale code based on the imports that are given within each file.",
   "main": "index.js",
   "scripts": {
-    "_test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
-    "test": "echo nothing to test",
+    "test": "mocha --timeout 20000 --exit 'src/**/*Test.js'",
     "compile": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/chai": "^4.2.1",
+    "@types/chai": "^4.2.11",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
-    "mocha": "^6.2.0",
+    "mocha": "^6.2.3",
+    "nyc": "^15.1.0",
     "polar-test": "^1.100.14",
+    "ts-node": "^8.10.2",
     "tslint": "=6.1.1",
-    "typescript": "=3.8.3"
+    "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@types/jest": "^25.2.3",
     "polar-shared": "^1.100.14"
   },
   "files": [

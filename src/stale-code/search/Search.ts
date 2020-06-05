@@ -9,7 +9,7 @@ import {DefaultOpts} from "./find";
  * @param data 
  * @param currMap 
  */
-function initializeTypescriptMapFiles (data : ReadonlyArray<IFile>, currMap : Map<string,number>) {
+export function initializeTypescriptMapFiles (data : ReadonlyArray<IFile>, currMap : Map<string,number>) {
     for (var k = 0; k < data.length; k++) {
         if (currMap.has(data[k].path) == false) {
             if (data[k].name.includes('test.ts')  || data[k].name.includes('.d.ts')) {
@@ -29,7 +29,7 @@ function initializeTypescriptMapFiles (data : ReadonlyArray<IFile>, currMap : Ma
  * @param currFullPath 
  * @param currMap 
  */
-function updateHitMap (currFullPath : string, currMap : Map<string,number>) {
+export function updateHitMap (currFullPath : string, currMap : Map<string,number>) {
     if (currFullPath != undefined) {
         /// checks to see if the hitmap already has that path
         if (currMap.has(currFullPath) === true) {
@@ -51,7 +51,7 @@ function updateHitMap (currFullPath : string, currMap : Map<string,number>) {
  * checks to make sure that the path exists                         
  * @param finalPath 
  */
-function checkFullPath (finalPath : string) : string {
+export function checkFullPath (finalPath : string) : string {
     if (fs.existsSync(finalPath) == false) {
         finalPath = finalPath + 'x';
         if (fs.existsSync(finalPath) == false) {
@@ -73,7 +73,7 @@ function checkFullPath (finalPath : string) : string {
  * converts that file path into a full file path
  * @param currPath 
  */
-function expandPath (currPath : string) : string {
+export function expandPath (currPath : string) : string {
     /// fixes the punctuation of the file path of the import
     currPath = currPath.replace(/['"]+/g, '');
     if (currPath.includes('.ts') == false) {
@@ -87,7 +87,7 @@ function expandPath (currPath : string) : string {
  * Sorts the map in order based on the hit values 
  * @param currMap 
  */
-function sortMap(currMap : Map<string,number>) : Map<string,number> {
+export function sortMap(currMap : Map<string,number>) : Map<string,number> {
     currMap[Symbol.iterator] = function* () {
         yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
     }
@@ -98,7 +98,7 @@ function sortMap(currMap : Map<string,number>) : Map<string,number> {
  * swaps the key and the value of the map, so the number of hits is formatted to the left of the full file path
  * @param currMap 
  */
-function swapMapValues(currMap : any[][]) : any[][] {
+export function swapMapValues(currMap : any[][]) : any[][] {
     var finalHitMap = [];
     for (var index = 0; index < currMap.length; index++) {
         var currentArray = currMap[index];
@@ -113,7 +113,7 @@ function swapMapValues(currMap : any[][]) : any[][] {
  * prints out the final Map
  * @param finalMap 
  */
-function printMap(finalMap : any[][]) {
+export function printMap(finalMap : any[][]) {
     for (var j = 0; j < finalMap.length; j++) {
         var curr = finalMap[j];
         if (curr[1].includes('Test') == false && curr[1].includes('test') == false) {
@@ -126,7 +126,7 @@ function printMap(finalMap : any[][]) {
  * gets the extension of the filename
  * @param filename 
  */
-function getExtension (filename : string) : string {
+export function getExtension (filename : string) : string {
     var extension = filename.split('.').pop();
     if (extension != undefined) {
         return extension;
@@ -136,7 +136,7 @@ function getExtension (filename : string) : string {
     }
 }
 
-function main() {
+export function main() {
     /// uses process.argv to see take in any number of directories in the command line
     /// example: node Search.js /Users/mihirmacpro13/Documents/GitHub/polar-bookshelf/web/js /Users/mihirmacpro13/Documents/GitHub/polar-bookshelf/apps
     var argument = process.argv;
