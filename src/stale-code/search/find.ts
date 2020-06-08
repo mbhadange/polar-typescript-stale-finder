@@ -89,13 +89,22 @@ export interface IFile {
     readonly type: FileType; /// what type the file is
 }
 
+/**
+ * all the functions needed for the main to figure out the stale code
+ */
 export class Stale {
     /**
      * gets the extension of the filename
      * @param filename 
      */
     public static getExtension (filename : string) : string | undefined {
-        var extension = filename.split('.').pop();
+        var extension;
+        if (filename.includes('.')) {
+            extension = filename.split('.').pop();
+        }
+        else {
+            extension = undefined;
+        }
         return extension;
     }
 
