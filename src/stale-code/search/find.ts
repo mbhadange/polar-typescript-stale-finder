@@ -88,3 +88,132 @@ export interface IFile {
     readonly path: PathStr; /// the entire path of the file
     readonly type: FileType; /// what type the file is
 }
+
+export class Stale {
+    /**
+     * gets the extension of the filename
+     * @param filename 
+     */
+    public static getExtension (filename : string) : string | undefined {
+        var extension = filename.split('.').pop();
+        return extension;
+    }
+
+    /**
+     * iterates through each file in the directory and adds to the map
+     * @param data 
+     * @param currMap 
+     */
+    public static initializeTypescriptMapFiles (data : ReadonlyArray<IFile>, currMap : Map<string,number>) {
+        for (var k = 0; k < data.length; k++) {
+            if (currMap.has(data[k].path) == false) {
+                if (data[k].name.includes('test.ts')  || data[k].name.includes('.d.ts')) {
+                    continue;
+                }
+                /// checks to make sure that the file type is either .ts or .tsx
+                else if (data[k].name.split('.').pop() === 'ts' || data[k].name.split('.').pop() === 'tsx') {
+                    /// initializes hitMap
+                    currMap.set(data[k].path, 0);
+                }
+            } 
+        }
+    }
+
+    /**
+     * updates the value of the file in the hitMap
+     * @param currFullPath 
+     * @param currMap 
+     */
+    public static updateHitMap (currFullPath : string, currMap : Map<string,number>) {
+        if (currFullPath != undefined) {
+            /// checks to see if the hitmap already has that path
+            if (currMap.has(currFullPath) === true) {
+                /// if it does then increments the value of that file by 1
+                var currVal = currMap.get(currFullPath);
+                if (currVal != undefined) {
+                    currMap.set(currFullPath, currVal + 1);
+                }
+            }
+            /// if the hitmap does not have that path as a key already
+            else {
+                /// then sets that file path to have a value of 1
+                currMap.set(currFullPath, 1);
+            }
+        }
+    }
+
+    /**
+     * checks to make sure that the path exists                         
+     * @param finalPath 
+     */
+    public static checkFullPath (finalPath : string) : string {
+        if (fs.existsSync(finalPath) == false) {
+            finalPath = finalPath + 'x';
+            if (fs.existsSync(finalPath) == false) {
+                finalPath = finalPath.replace(finalPath.substring(finalPath.length-3), "");
+                finalPath = finalPath + 'd.ts';
+                if (finalPath.includes('utils.js.d.ts')) {
+                    finalPath = finalPath.replace(finalPath.substring(finalPath.length-7), "");
+                    finalPath = finalPath + 'ts';
+                }
+                if (fs.existsSync(finalPath) == false) {
+                    console.warn("File does not exist: " + finalPath);
+                }
+            }
+        }
+        return finalPath;
+    }
+
+    /**
+     * converts that file path into a full file path
+     * @param currPath 
+     */
+    public static expandPath (currPath : string) : string {
+        /// fixes the punctuation of the file path of the import
+        currPath = currPath.replace(/['"]+/g, '');
+        if (currPath.includes('.ts') == false) {
+            currPath = currPath.replace(currPath.substring(currPath.length-1), "");
+            currPath = currPath + '.ts';
+        }
+        return currPath;
+    }
+
+    /**
+     * Sorts the map in order based on the hit values 
+     * @param currMap 
+     */
+    public static sortMap(currMap : Map<string,number>) : Map<string,number> {
+        currMap[Symbol.iterator] = function* () {
+            yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
+        }
+        return currMap;
+    }
+
+    /**
+     * swaps the key and the value of the map, so the number of hits is formatted to the left of the full file path
+     * @param currMap 
+     */
+    public static swapMapValues(currMap : any[][]) : any[][] {
+        var finalHitMap = [];
+        for (var index = 0; index < currMap.length; index++) {
+            var currentArray = currMap[index];
+            var key = currentArray[0];
+            var value = currentArray[1];
+            finalHitMap[index] = [value, key];
+        }
+        return finalHitMap;
+    }
+
+    /**
+     * prints out the final Map
+     * @param finalMap 
+     */
+    public static printMap(finalMap : any[][]) {
+        for (var j = 0; j < finalMap.length; j++) {
+            var curr = finalMap[j];
+            if (curr[1].includes('Test') == false && curr[1].includes('test') == false) {
+                console.log(curr[0], ' ', curr[1]);
+            }
+        }
+    }
+}
