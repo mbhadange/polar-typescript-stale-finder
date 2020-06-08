@@ -1,9 +1,8 @@
-import { Stale } from "./Search";
+import { Stale } from "./find";
 import { assert } from 'chai';
 
 describe ('GetExtension', function() {
     it ("File extension getter", function() {
-        var data = "file.txt";
-        assert.notEqual(Stale.getExtension(data), undefined);
+        assert.equal(Stale.getExtension("file.txt"), "txt");
     });
 });
