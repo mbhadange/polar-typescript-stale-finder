@@ -4,6 +4,16 @@ import * as path from 'path';
 import {Search, IFile} from "./find";
 import {DefaultOpts} from "./find";
 
+export class Stale {
+    /**
+     * gets the extension of the filename
+     * @param filename 
+     */
+    public static getExtension (filename : string) : string | undefined {
+        var extension = filename.split('.').pop();
+        return extension;
+    }
+}
 /**
  * iterates through each file in the directory and adds to the map
  * @param data 
@@ -122,14 +132,7 @@ export function printMap(finalMap : any[][]) {
     }
 }
 
-/**
- * gets the extension of the filename
- * @param filename 
- */
-export function getExtension (filename : string) : string | undefined {
-    var extension = filename.split('.').pop();
-    return extension;
-}
+
 
 export function main() {
     /// uses process.argv to see take in any number of directories in the command line
@@ -150,7 +153,7 @@ export function main() {
             var file = fileMap[i];
             var initialFileName = file.name;
             var initialFilePath = file.path;
-            var ext = getExtension(initialFileName);
+            var ext = Stale.getExtension(initialFileName);
 
             /// checks to see if the file name is test.ts
             /// if it is then continues to the next file
