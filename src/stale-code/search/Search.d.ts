@@ -6,5 +6,5 @@ export declare function expandPath(currPath: string): string;
 export declare function sortMap(currMap: Map<string, number>): Map<string, number>;
 export declare function swapMapValues(currMap: any[][]): any[][];
 export declare function printMap(finalMap: any[][]): void;
-export declare function getExtension(filename: string): string;
+export declare function getExtension(filename: string): string | undefined;
 export declare function main(): void;

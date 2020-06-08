@@ -126,14 +126,9 @@ export function printMap(finalMap : any[][]) {
  * gets the extension of the filename
  * @param filename 
  */
-export function getExtension (filename : string) : string {
+export function getExtension (filename : string) : string | undefined {
     var extension = filename.split('.').pop();
-    if (extension != undefined) {
-        return extension;
-    }
-    else {
-        return 'undefined';
-    }
+    return extension;
 }
 
 export function main() {
@@ -163,7 +158,7 @@ export function main() {
                 continue;
             }
             /// checks to make sure that the file type is either .ts or .tsx
-            else if (['ts','tsx'].includes(ext)) {
+            else if (ext != undefined && ['ts','tsx'].includes(ext)) {
                 /// gets all the contents of the current file
                 const data = fs.readFileSync(initialFilePath,'utf8');
                 /// splits each line of data to allow us to parse through each one
