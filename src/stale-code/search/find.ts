@@ -126,6 +126,7 @@ export class Stale {
                 }
             } 
         }
+        return currMap;
     }
 
     /**

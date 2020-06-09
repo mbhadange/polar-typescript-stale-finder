@@ -17,7 +17,7 @@ export function main() {
         /// returns an array with all the files in the directory
         var fileMap = Search.findFilesRecursively(myArgs, opts);
         /// iterates through each file in the directory and adds to the map
-        Stale.initializeTypescriptMapFiles(fileMap, hitMap);
+        hitMap = Stale.initializeTypescriptMapFiles(fileMap, hitMap);
 
         for (var i = 0; i < fileMap.length; i++) {
             /// map of the file type, name, path 

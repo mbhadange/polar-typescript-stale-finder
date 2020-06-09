@@ -1,5 +1,7 @@
-import { Stale } from "./find";
-import { assert } from 'chai';
+import { Stale, Search } from "./find";
+import { assert, expect } from 'chai';
+import {DefaultOpts, IFile} from "./find";
+import * as path from 'path';
 
 describe ('GetExtension', function() {
     it ("Test 1", function() {
@@ -16,5 +18,39 @@ describe ('GetExtension', function() {
     });
     it ("Test 5", function() {
         assert.equal(Stale.getExtension("currentfile/file.ts"), "ts");
+    });
+});
+
+describe ('FindFilesRecursively', function() {
+    it ("Test 1", function() {
+        var data = path.resolve();
+        const opts = new DefaultOpts();
+        assert.notEqual(Search.findFilesRecursively(data, opts), []);
+    });
+    it ("Test 2", function() {
+        var data = path.resolve();
+        const opts = new DefaultOpts();
+        var searchArrayLength = (Search.findFilesRecursively(data, opts)).length;
+        var emptyArrayLength = ([]).length;
+        assert.notEqual(searchArrayLength, emptyArrayLength);
+    });
+});
+
+describe ('InitializeTypescriptMapFiles', function() {
+    it ("Test 1", function() {
+        const data : IFile[] = [];
+        var currMap = new Map();
+        var finalMap = Stale.initializeTypescriptMapFiles(data, currMap);
+        var newMapLength = [ ...finalMap.keys() ].length;
+        assert.equal(newMapLength, 0);
+    });
+    it ("Test 2", function() {
+        var data = path.resolve();
+        const opts = new DefaultOpts();
+        var fileArray = Search.findFilesRecursively(data, opts);
+        var currMap = new Map();
+        var finalMap = Stale.initializeTypescriptMapFiles(fileArray, currMap);
+        var mapLength = [ ...finalMap.keys() ].length;
+        assert.notEqual(mapLength,0);
     });
 });
