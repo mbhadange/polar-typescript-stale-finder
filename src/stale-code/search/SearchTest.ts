@@ -104,3 +104,33 @@ describe ('ExpandPath', function() {
         assert.equal(Stale.expandPath(file), ".ts");
     });
 });
+
+describe ('SortMap', function() {
+    it ("Test 1", function() {
+        var currMap = new Map();
+        currMap.set('a', 3);
+        currMap.set('b', 6);
+        currMap.set('d', 1);
+        currMap.set('z', 0);
+        var finalMap = Stale.sortMap(currMap);
+        let map = new Map([
+            [ "a", 0 ],
+            [ "b", 1 ],
+            [ "d", 3 ],
+            [ "z", 6 ]
+        ]);
+        assert.notEqual(finalMap, map);
+    });
+});
+
+describe ('SwapMapValues', function() {
+    it ("Test 1", function() {
+        var currArray = [['a', 1], ['b', 2], ['c', 3]];
+        assert.notEqual(Stale.swapMapValues(currArray), currArray);
+    });
+    it ("Test 2", function() {
+        var currArray = [['a', 1], ['b', 2], ['c', 3]];
+        var finalArray = [[1, 'a'], [2, 'b'], [3, 'c']];
+        assert.deepEqual(Stale.swapMapValues(currArray), finalArray);
+    });
+});
