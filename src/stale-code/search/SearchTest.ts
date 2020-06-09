@@ -80,3 +80,27 @@ describe ('UpdateHitMap', function() {
     });
 });
 
+describe ('CheckFullPath', function() {
+    it ("Test 1", function() {
+        assert.equal(Stale.checkFullPath(path.resolve()), path.resolve());
+    });
+    it ("Test 2", function() {
+        var currPath = "file.ts";
+        assert.equal(Stale.checkFullPath(currPath), "file.d.ts");
+    });
+});
+
+describe ('ExpandPath', function() {
+    it ("Test 1", function() {
+        var file = "./file;";
+        assert.equal(Stale.expandPath(file), "./file.ts");
+    });
+    it ("Test 2", function() {
+        var file = "./path/to/file.ts;";
+        assert.equal(Stale.expandPath(file), "./path/to/file.ts;");
+    });
+    it ("Test 3", function() {
+        var file = ";";
+        assert.equal(Stale.expandPath(file), ".ts");
+    });
+});
