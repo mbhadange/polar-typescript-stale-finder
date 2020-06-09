@@ -150,6 +150,7 @@ export class Stale {
                 currMap.set(currFullPath, 1);
             }
         }
+        return currMap;
     }
 
     /**

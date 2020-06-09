@@ -62,7 +62,7 @@ export function main() {
                         }
                         if (fullPath != undefined) {
                             /// updates the value of the file in the hitMap
-                            Stale.updateHitMap(fullPath, hitMap);
+                            hitMap = Stale.updateHitMap(fullPath, hitMap);
                         }
                     }
                 });

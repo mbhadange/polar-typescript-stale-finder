@@ -21,7 +21,7 @@ export interface IFile {
 export declare class Stale {
     static getExtension(filename: string): string | undefined;
     static initializeTypescriptMapFiles(data: ReadonlyArray<IFile>, currMap: Map<string, number>): Map<string, number>;
-    static updateHitMap(currFullPath: string, currMap: Map<string, number>): void;
+    static updateHitMap(currFullPath: string, currMap: Map<string, number>): Map<string, number>;
     static checkFullPath(finalPath: string): string;
     static expandPath(currPath: string): string;
     static sortMap(currMap: Map<string, number>): Map<string, number>;
