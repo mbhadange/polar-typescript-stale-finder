@@ -3,6 +3,9 @@ import { assert, expect } from 'chai';
 import {DefaultOpts, IFile} from "./find";
 import * as path from 'path';
 
+/**
+ * Tests to make sure that the extensions of the file name/path are properly found 
+ */
 describe ('GetExtension', function() {
     it ("Test 1", function() {
         assert.equal(Stale.getExtension("file.txt"), "txt");
@@ -21,6 +24,9 @@ describe ('GetExtension', function() {
     });
 });
 
+/**
+ * Tests to make sure that the function is returning the proper array of files and is not returning an empty array
+ */
 describe ('FindFilesRecursively', function() {
     it ("Test 1", function() {
         var data = path.resolve();
@@ -36,6 +42,10 @@ describe ('FindFilesRecursively', function() {
     });
 });
 
+/**
+ * Tests to make sure that the files that fit the requirement are properly being added to the hitmap
+ * Checks this by making sure that the length of the map matches or doesn'tt match the given length
+ */
 describe ('InitializeTypescriptMapFiles', function() {
     it ("Test 1", function() {
         const data : IFile[] = [];
@@ -55,6 +65,9 @@ describe ('InitializeTypescriptMapFiles', function() {
     });
 });
 
+/**
+ * Tests to make sure that the hit values are properly being updated if the same file is found as an import
+ */
 describe ('UpdateHitMap', function() {
     it ("Test 1", function() {
         var data = path.resolve();
@@ -80,6 +93,9 @@ describe ('UpdateHitMap', function() {
     });
 });
 
+/**
+ * Tests to see if the path is properly formed and that it points to a proper file
+ */
 describe ('CheckFullPath', function() {
     it ("Test 1", function() {
         assert.equal(Stale.checkFullPath(path.resolve()), path.resolve());
@@ -90,6 +106,10 @@ describe ('CheckFullPath', function() {
     });
 });
 
+/**
+ * Tests to see whether the file is being properly expanded and gives the path that we are looking for
+ * Uses the 'Check full path' function afterwards to make sure that the path is correct and is acessible
+ */
 describe ('ExpandPath', function() {
     it ("Test 1", function() {
         var file = "./file;";
@@ -105,6 +125,10 @@ describe ('ExpandPath', function() {
     });
 });
 
+/**
+ * Tests to see whether maps are properly being sorted when this function is called ... 
+ * Both the value and key should move to the proper spot, not just one or the other
+ */
 describe ('SortMap', function() {
     it ("Test 1", function() {
         var currMap = new Map();
@@ -123,6 +147,9 @@ describe ('SortMap', function() {
     });
 });
 
+/**
+ * Tests to make sure that the key and value of the map are properly being swapped to match final formatting
+ */
 describe ('SwapMapValues', function() {
     it ("Test 1", function() {
         var currArray = [['a', 1], ['b', 2], ['c', 3]];
@@ -135,6 +162,9 @@ describe ('SwapMapValues', function() {
     });
 });
 
+/**
+ * Tests to see that if there is a "@NotStale" string in a file, then that file is not added to the hitmap
+ */
 describe ('IsNotStale', function() {
     it ("Test 1", function() {
         assert.equal(Stale.isNotStale("./src/stale-code/search/Search.ts"), true);
