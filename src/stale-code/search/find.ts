@@ -113,7 +113,7 @@ export class Stale {
      * @param data 
      * @param currMap 
      */
-    public static initializeTypescriptMapFiles (data : ReadonlyArray<IFile>, currMap : Map<string,number>) {
+    public static initializeTypescriptMapFiles (data : ReadonlyArray<IFile>, currMap : Map<string,number>) : Map<string,number> {
         for (var k = 0; k < data.length; k++) {
             if (currMap.has(data[k].path) == false) {
                 if (data[k].name.includes('test.ts')  || data[k].name.includes('.d.ts')) {
@@ -134,7 +134,7 @@ export class Stale {
      * @param currFullPath 
      * @param currMap 
      */
-    public static updateHitMap (currFullPath : string, currMap : Map<string,number>) {
+    public static updateHitMap (currFullPath : string, currMap : Map<string,number>) : Map<string,number> {
         if (currFullPath != undefined) {
             /// checks to see if the hitmap already has that path
             if (currMap.has(currFullPath) === true) {
@@ -226,5 +226,15 @@ export class Stale {
                 console.log(curr[0], ' ', curr[1]);
             }
         }
+    }
+
+    /// checks to see if the file contains a "@NotStale" string
+    public static isNotStale(sourcePath : string) : boolean {
+        var includes = false;
+        const data = fs.readFileSync(sourcePath, 'utf8');
+        if (data.includes('@NotStale')) {
+            includes = true;
+        }
+        return includes;
     }
 }

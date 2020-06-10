@@ -134,3 +134,9 @@ describe ('SwapMapValues', function() {
         assert.deepEqual(Stale.swapMapValues(currArray), finalArray);
     });
 });
+
+describe ('IsNotStale', function() {
+    it ("Test 1", function() {
+        assert.equal(Stale.isNotStale("./src/stale-code/search/Search.ts"), true);
+    });
+});

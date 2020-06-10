@@ -1,3 +1,4 @@
+/// "@NotStale"
 import ErrnoException = NodeJS.ErrnoException;
 import * as fs from "fs";
 import * as path from 'path';

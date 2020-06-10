@@ -27,4 +27,5 @@ export declare class Stale {
     static sortMap(currMap: Map<string, number>): Map<string, number>;
     static swapMapValues(currMap: any[][]): any[][];
     static printMap(finalMap: any[][]): void;
+    static isNotStale(sourcePath: string): boolean;
 }
