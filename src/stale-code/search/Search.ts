@@ -34,6 +34,12 @@ export function main() {
             }
             /// checks to make sure that the file type is either .ts or .tsx
             else if (ext != undefined && ['ts','tsx'].includes(ext)) {
+                /// knows if file includes "@StaleCode" ... if it does then skips that file
+                var isStaleCode = Stale.isNotStale(initialFilePath);
+                if (isStaleCode == true) {
+                    hitMap.delete(initialFilePath);
+                    continue;
+                }
                 /// gets all the contents of the current file
                 const data = fs.readFileSync(initialFilePath,'utf8');
                 /// splits each line of data to allow us to parse through each one
@@ -41,6 +47,7 @@ export function main() {
                 /// creates a regular expression for the import lines
                 const re = /import(?:["'\s]*([\w*{}\n\r\t, ]+)from\s*)?["'\s].*([@\w_-]+)["'\s].*;$/;
                 /// iterates through each line of the file
+                var fullPath: string;
                 lines.forEach((line) => {
                     /// checks to see if the line matches the format of the regular expression
                     var importLine = line.match(re);
@@ -50,7 +57,6 @@ export function main() {
                         var importVal = importLine[0];
                         /// splits the line based off spaces and gets only the file path
                         var filePath = importVal.split(' ').pop();
-                        var fullPath;
                         /// converts that file path into a full file path
                         if (filePath != undefined) {
                             if (filePath.includes('./') || filePath.includes('../')) {
