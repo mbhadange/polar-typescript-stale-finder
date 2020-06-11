@@ -34,14 +34,14 @@ export function main() {
             }
             /// checks to make sure that the file type is either .ts or .tsx
             else if (ext != undefined && ['ts','tsx'].includes(ext)) {
-                /// knows if file includes "@StaleCode" ... if it does then skips that file
-                var isStaleCode = Stale.isNotStale(initialFilePath);
+                /// gets all the contents of the current file
+                const data = fs.readFileSync(initialFilePath,'utf8');
+                /// knows if the file includes "@NotStale" ... if it does then skips the file
+                const isStaleCode = Stale.isNotStale(data);
                 if (isStaleCode == true) {
                     hitMap.delete(initialFilePath);
                     continue;
                 }
-                /// gets all the contents of the current file
-                const data = fs.readFileSync(initialFilePath,'utf8');
                 /// splits each line of data to allow us to parse through each one
                 const lines = data.split(/\r?\n/);
                 /// creates a regular expression for the import lines

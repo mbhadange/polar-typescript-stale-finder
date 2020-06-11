@@ -228,10 +228,9 @@ export class Stale {
         }
     }
 
-    /// checks to see if the file contains a "@NotStale" string
-    public static isNotStale(sourcePath : string) : boolean {
+    /// checks to see if the file is Stale
+    public static isNotStale(data : string) : boolean {
         var includes = false;
-        const data = fs.readFileSync(sourcePath, 'utf8');
         if (data.includes('@NotStale')) {
             includes = true;
         }

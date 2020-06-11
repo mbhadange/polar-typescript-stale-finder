@@ -2,6 +2,7 @@ import { Stale, Search } from "./find";
 import { assert, expect } from 'chai';
 import {DefaultOpts, IFile} from "./find";
 import * as path from 'path';
+import * as fs from "fs";
 
 /**
  * Tests to make sure that the extensions of the file name/path are properly found 
@@ -167,6 +168,11 @@ describe ('SwapMapValues', function() {
  */
 describe ('IsNotStale', function() {
     it ("Test 1", function() {
-        assert.equal(Stale.isNotStale("./src/stale-code/search/Search.ts"), true);
+        const data = fs.readFileSync("./src/stale-code/search/Search.ts",'utf8');
+        assert.equal(Stale.isNotStale(data), true);
+    });
+    it ("Test 2", function() {
+        const data = fs.readFileSync("./src/stale-code/search/find.ts", 'utf8');
+        assert.equal(Stale.isNotStale(data), true);
     });
 });
