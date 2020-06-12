@@ -45,7 +45,7 @@ export function main() {
                 /// splits each line of data to allow us to parse through each one
                 const lines = data.split(/\r?\n/);
                 /// creates a regular expression for the import lines
-                const re = /import(?:["'\s]*([\w*{}\n\r\t, ]+)from\s*)?["'\s].*([@\w_-]+)["'\s].*;$/;
+                const re = /^import(?:["'\s]*([\w*{}\n\r\t, ]+)from\s*)?["'\s].*([@\w_-]+)["'\s].*;$/;
                 /// iterates through each line of the file
                 lines.forEach((line) => {
                     /// checks to see if the line matches the format of the regular expression

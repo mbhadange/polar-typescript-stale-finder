@@ -176,3 +176,10 @@ describe ('IsNotStale', function() {
         assert.equal(Stale.isNotStale(data), true);
     });
 });
+
+describe ('ParseImports', function() {
+    it ("Test 1", function() {
+        const data = fs.readFileSync("/Users/mihirmacpro13/Documents/GitHub/polar-bookshelf/web/js/datastore/PersistenceLayer.ts",'utf8');
+        console.log(Stale.parseImports(data));
+    });
+});

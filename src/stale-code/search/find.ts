@@ -3,6 +3,7 @@ import * as libpath from "path";
 import * as fs from "fs";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {PathStr} from "polar-shared/src/util/Strings";
+import { cursorTo } from "readline";
 
 export class Search {
     public static findFilesRecursively(dir: string, opts: Opts = new DefaultOpts()): ReadonlyArray<IFile> {
@@ -236,4 +237,17 @@ export class Stale {
         }
         return includes;
     }
+
+    public static parseImports(data : string) : any{
+        const re = /import(?:["'\s]*([\w*{}\n\r\t, ]+)from\s*)?["'\s].*([@\w_-]+)["'\s].*;$/gm;
+        var result = data.match(re);
+        if (result != null) {
+            return result;
+        }
+    }
+}
+
+export interface IImport {
+    /// path to the file imported
+    readonly path : PathStr;
 }

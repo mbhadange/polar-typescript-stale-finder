@@ -28,4 +28,8 @@ export declare class Stale {
     static swapMapValues(currMap: any[][]): any[][];
     static printMap(finalMap: any[][]): void;
     static isNotStale(data: string): boolean;
+    static parseImports(data: string): any;
+}
+export interface IImport {
+    readonly path: PathStr;
 }
