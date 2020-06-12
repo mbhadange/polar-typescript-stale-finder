@@ -179,7 +179,53 @@ describe ('IsNotStale', function() {
 
 describe ('ParseImports', function() {
     it ("Test 1", function() {
-        const data = fs.readFileSync("/Users/mihirmacpro13/Documents/GitHub/polar-bookshelf/web/js/datastore/PersistenceLayer.ts",'utf8');
-        console.log(Stale.parseImports(data));
+        const data = 
+        `
+        import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';
+        `;
+        assert.equal(Stale.parseImports(data)[0], "import {DocMetaFileRef, DocMetaRef} from './DocMetaRef';");
+    });
+    it ("Test 2", function() {
+        const data = 
+        `
+        import {DocMetas} from "../metadata/DocMetas";
+        import {
+            BackendFileRefData,
+            BinaryFileData,
+            Datastore,
+            DatastoreCapabilities,
+            DatastoreInitOpts,
+            DatastoreOverview,
+            DeleteResult, DocMetaSnapshot,
+            DocMetaSnapshotEventListener, DocMetaSnapshotOpts, DocMetaSnapshotResult,
+            ErrorListener,
+            GetFileOpts,
+            GroupIDStr,
+            SnapshotResult,
+            WriteFileOpts
+        } from './Datastore';
+        import {Backend} from 'polar-shared/src/datastore/Backend';
+        `
+        const result = [
+            'import {DocMetas} from "../metadata/DocMetas";',
+            'import {\n' +
+              '            BackendFileRefData,\n' +
+              '            BinaryFileData,\n' +
+              '            Datastore,\n' +
+              '            DatastoreCapabilities,\n' +
+              '            DatastoreInitOpts,\n' +
+              '            DatastoreOverview,\n' +
+              '            DeleteResult, DocMetaSnapshot,\n' +
+              '            DocMetaSnapshotEventListener, DocMetaSnapshotOpts, DocMetaSnapshotResult,\n' +
+              '            ErrorListener,\n' +
+              '            GetFileOpts,\n' +
+              '            GroupIDStr,\n' +
+              '            SnapshotResult,\n' +
+              '            WriteFileOpts\n' +
+              "        } from './Datastore';",
+            "import {Backend} from 'polar-shared/src/datastore/Backend';"
+        ];
+        assert.deepEqual(Stale.parseImports(data), result);
+          
     });
 });
