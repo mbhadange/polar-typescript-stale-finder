@@ -247,8 +247,3 @@ export class Stale {
         }
     }
 }
-
-export interface IImport {
-    /// path to the file imported
-    readonly path : PathStr;
-}
