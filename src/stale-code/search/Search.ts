@@ -42,37 +42,33 @@ export function main() {
                     hitMap.delete(initialFilePath);
                     continue;
                 }
-                /// splits each line of data to allow us to parse through each one
-                const lines = data.split(/\r?\n/);
-                /// creates a regular expression for the import lines
-                const re = /^import(?:["'\s]*([\w*{}\n\r\t, ]+)from\s*)?["'\s].*([@\w_-]+)["'\s].*;$/;
-                /// iterates through each line of the file
-                lines.forEach((line) => {
-                    /// checks to see if the line matches the format of the regular expression
-                    var importLine = line.match(re);
-                    /// makes sure that the line actually has the proper format of the regEx
-                    if (importLine != null) {
-                        /// gets the entire import lines contents
-                        var importVal = importLine[0];
-                        /// splits the line based off spaces and gets only the file path
-                        var filePath = importVal.split(' ').pop();
-                        var fullPath;
-                        /// converts that file path into a full file path
-                        if (filePath != undefined) {
-                            if (filePath.includes('./') || filePath.includes('../')) {
-                                filePath = Stale.expandPath(filePath);
-                                /// creates the full path with the proper directory name
-                                var fullDirectory = path.dirname(initialFilePath);
-                                fullPath = path.resolve(fullDirectory, filePath);
-                                fullPath = Stale.checkFullPath(fullPath);
-                            }
-                        }
-                        if (fullPath != undefined) {
-                            /// updates the value of the file in the hitMap
-                            hitMap = Stale.updateHitMap(fullPath, hitMap);
+                /// gets an array of all imports in the file
+                const importArray = Stale.parseImports(data);
+                /// makes sure that the importArray is not undefined or null
+                if ([undefined, null].includes(importArray)) {
+                    continue;
+                }
+                /// iterates through each import of the file which is stored in the array
+                for (var val = 0; val < importArray.length; val++) {
+                    var importLine = importArray[val];
+                    /// splits the line based off spaces and gets only the file path
+                    var filePath = importLine.split(' ').pop();
+                    var fullPath;
+                    /// converts that file path into a full file path
+                    if (filePath != undefined) {
+                        if (filePath.includes('./') || filePath.includes('../')) {
+                            filePath = Stale.expandPath(filePath);
+                            /// creates the full path with the proper directory name
+                            var fullDirectory = path.dirname(initialFilePath);
+                            fullPath = path.resolve(fullDirectory, filePath);
+                            fullPath = Stale.checkFullPath(fullPath);
                         }
                     }
-                });
+                    if (fullPath != undefined) {
+                        /// updates the value of the file in the hitMap
+                        hitMap = Stale.updateHitMap(fullPath, hitMap);
+                    }
+                };
             }
         }
     }

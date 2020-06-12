@@ -238,6 +238,7 @@ export class Stale {
         return includes;
     }
 
+    /// parses the imports and stores all the imports of the file from the array
     public static parseImports(data : string) : any{
         const re = /import(?:["'\s]*([\w*{}\n\r\t, ]+)from\s*)?["'\s].*([@\w_-]+)["'\s].*;$/gm;
         var result = data.match(re);
