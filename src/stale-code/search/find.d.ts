@@ -30,6 +30,3 @@ export declare class Stale {
     static isNotStale(data: string): boolean;
     static parseImports(data: string): any;
 }
-export interface IImport {
-    readonly path: PathStr;
-}
