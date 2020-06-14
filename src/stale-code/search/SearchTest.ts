@@ -1,5 +1,5 @@
 import { Stale, Search } from "./find";
-import { assert, expect } from 'chai';
+import { assert } from 'chai';
 import {DefaultOpts, IFile} from "./find";
 import * as path from 'path';
 import * as fs from "fs";

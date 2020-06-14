@@ -3,7 +3,6 @@ import * as libpath from "path";
 import * as fs from "fs";
 import {FilePaths} from "polar-shared/src/util/FilePaths";
 import {PathStr} from "polar-shared/src/util/Strings";
-import { cursorTo } from "readline";
 
 export class Search {
     public static findFilesRecursively(dir: string, opts: Opts = new DefaultOpts()): ReadonlyArray<IFile> {
