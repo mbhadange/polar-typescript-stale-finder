@@ -228,7 +228,10 @@ export class Stale {
         }
     }
 
-    /// checks to see if the file is Stale
+    /**
+     * Checks to see if the file is Stale based on the "NotStale" tag
+     * @param data 
+     */
     public static isNotStale(data : string) : boolean {
         var includes = false;
         if (data.includes('@NotStale')) {
@@ -237,7 +240,10 @@ export class Stale {
         return includes;
     }
 
-    /// parses the imports and stores all the imports of the file from the array
+    /**
+     * parses the imports and stores all the imports of the file from the array
+     * @param data 
+     */
     public static parseImports(data : string) : any{
         const re = /import(?:["'\s]*([\w*{}\n\r\t, ]+)from\s*)?["'\s].*([@\w_-]+)["'\s].*;$/gm;
         var result = data.match(re);

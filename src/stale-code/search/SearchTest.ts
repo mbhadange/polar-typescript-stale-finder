@@ -177,6 +177,9 @@ describe ('IsNotStale', function() {
     });
 });
 
+/**
+ * Tests to see that the parseImports function gets all types of imports in an array format
+ */
 describe ('ParseImports', function() {
     it ("Test 1", function() {
         const data = 
@@ -225,7 +228,6 @@ describe ('ParseImports', function() {
               "        } from './Datastore';",
             "import {Backend} from 'polar-shared/src/datastore/Backend';"
         ];
-        assert.deepEqual(Stale.parseImports(data), result);
-          
+        assert.deepEqual(Stale.parseImports(data), result);    
     });
 });
