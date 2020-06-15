@@ -146,6 +146,21 @@ describe ('SortMap', function() {
         ]);
         assert.notEqual(finalMap, map);
     });
+    it ("Test 2", function() {
+        var currMap = new Map();
+        currMap.set('a', 10);
+        currMap.set('b', 7);
+        currMap.set('c', 1);
+        currMap.set('d', 3);
+        const finalMap = Stale.sortMap(currMap);
+        let map = new Map([
+            [ "c", 1 ],
+            [ "d", 3 ],
+            [ "b", 7 ],
+            [ "a", 10 ]
+        ]);
+        assert.deepEqual(map, finalMap);
+    });
 });
 
 /**
