@@ -36,12 +36,6 @@ export function main() {
             else if (ext != undefined && ['ts','tsx'].includes(ext)) {
                 /// gets all the contents of the current file
                 const data = fs.readFileSync(initialFilePath,'utf8');
-                /// knows if the file includes "@NotStale" ... if it does then skips the file
-                const isStaleCode = Stale.isNotStale(data);
-                if (isStaleCode == true) {
-                    hitMap.delete(initialFilePath);
-                    continue;
-                }
                 /// gets an array of all imports in the file
                 const importArray = Stale.parseImports(data);
                 /// makes sure that the importArray is not undefined or null
@@ -78,8 +72,10 @@ export function main() {
     var updatedHitMap = [...hitMap];
     /// swaps the key and value
     var finalMap = Stale.swapMapValues(updatedHitMap);
+    /// removes files that contain not stale tag from the final result
+    var finalArray = Stale.isNotStale(finalMap);
     /// prints the map out in table format (format: hitValue ... [tab] ... Path)
-    Stale.printMap(finalMap);
+    Stale.printMap(finalArray);
 }
 
 /// runs the main function and prints out the table with the number of hits as the key and the path as the value

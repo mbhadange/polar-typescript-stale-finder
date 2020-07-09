@@ -210,7 +210,10 @@ export class Stale {
             var currentArray = currMap[index];
             var key = currentArray[0];
             var value = currentArray[1];
-            finalHitMap[index] = [value, key];
+            if (value == 0) {
+                finalHitMap[index] = [value, key];
+            }
+            
         }
         return finalHitMap;
     }
@@ -230,14 +233,25 @@ export class Stale {
 
     /**
      * Checks to see if the file is Stale based on the "NotStale" tag
+     * Removes that file from final if it does include the not stale annotation
      * @param data 
      */
-    public static isNotStale(data : string) : boolean {
-        var includes = false;
-        if (data.includes('@NotStale')) {
-            includes = true;
+    public static isNotStale(finalArray : any[][]) : any[][] {
+        var result = [];
+        var indexVal = 0
+        for (var n = 0; n < finalArray.length; n++) {
+            var currArray = finalArray[n];
+            var currFile = currArray[1];
+            const data = fs.readFileSync(currFile,'utf8');
+            if (data.includes('@NotStale')) {
+                continue;
+            }
+            else {
+                result[indexVal] = currArray;
+                indexVal = indexVal + 1;
+            }
         }
-        return includes;
+        return result;
     }
 
     /**
