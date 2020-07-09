@@ -192,6 +192,7 @@ describe ('IsNotStale', function() {
     });
 });
 */
+
 /**
  * Tests to see that the parseImports function gets all types of imports in an array format
  */
